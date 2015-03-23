@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+     
+    <h:head>
+        <title>Selección de Cargo</title>
+        <h:outputStylesheet library="css" name="estilos.css"/>
+    </h:head>
+     
+    <h:body>
+        <h:form>
+            <h:panelGrid columns="10">
+                <p:outputLabel value="Código:" for="codigo"/>
+                <p:inputText id="codigo" styleClass="mayuscula"
+                             value="#{cargoSeleccionController.filtro.codigo}" 
+                             size="10" maxlength="10"/>
+                
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                
+                <p:outputLabel value="Nombre:"/>
+                <p:inputText id="nombre"
+                             value="#{cargoSeleccionController.filtro.nombre}" 
+                             size="30" maxlength="30"/>
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+
+
+            </h:panelGrid>
+            
+            <p:separator/>
+            <p:commandButton value="Buscar" ajax="false" action="#{cargoSeleccionController.doListar}"/>
+            <p:commandButton value="Limpiar" ajax="false" action="#{cargoSeleccionController.doLimpiar}"/>
+            
+            <!-- Mensajes -->
+            <h:panelGroup id="messagePanel" layout="block">
+                <p:messages/>
+            </h:panelGroup>
+
+            <h:outputText value="&lt;br/&gt;" escape="false" />
+            
+            <p:dataTable var="item" value="#{cargoSeleccionController.lista}" 
+                         paginator="true" rows="10" paginatorPosition="top" emptyMessage="No hay cargos disponibles para los filtros establecidos.">
+                
+                <p:column headerText="Código" styleClass="center" width="12%">
+                    <h:outputText value="#{item.codigo}"/>
+                </p:column>
+
+                <p:column headerText="Nombre" styleClass="left" width="20%">
+                    <h:outputText value="#{item.nombre}"/>
+                </p:column>
+                
+                <p:column headerText="Descripción" styleClass="left" width="40%">
+                    <h:outputText value="#{item.descripcion}"/>
+                </p:column>
+
+                <p:column headerText="Precio" styleClass="right" width="10%">
+                    <h:outputText value="#{item.precio}">
+                        <f:convertNumber pattern="#,##0.00 €" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column width="20" styleClass="center">
+                    <p:commandButton value="" styleClass="lista-select-btn-img" 
+                                     actionListener="#{cargoSeleccionController.doSeleccionar(item)}"/>
+                </p:column>
+                
+            </p:dataTable>
+        </h:form>
+    </h:body>
+     
+</html>

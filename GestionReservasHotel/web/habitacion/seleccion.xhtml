@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+     
+    <h:head>
+        <title>Selección de Habitación</title>
+        <h:outputStylesheet library="css" name="estilos.css"/>
+    </h:head>
+     
+    <h:body>
+        <h:form>
+            <h:panelGrid columns="1">
+                <h:panelGrid columns="2">
+                    <p:outputLabel for="tipo" value="Tipo:" />
+                    <p:selectOneMenu id="tipo" value="#{habitacionSeleccionController.filtro.tipoHabitacion}" >
+                        <f:selectItem itemLabel="-- Todos --" itemValue="#{null}" />
+                        <f:selectItems value="#{tipoHabitacionController.listaFiltro}" var="item"
+                                       itemLabel="#{item.nombre}" itemValue="#{item.idTipoHabitacion}" />
+                    </p:selectOneMenu>
+                
+                </h:panelGrid>
+                    
+                <h:panelGrid columns="12">
+                    <h:panelGrid>
+                        <p:outputLabel value="Fumadores:" />
+                        <p:selectOneRadio id="fumadores" value="#{habitacionSeleccionController.filtro.fumadorSn}">
+                            <f:selectItem itemLabel="Si" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="2" />
+                            <f:selectItem itemLabel="Todos" itemValue="0"/>
+                        </p:selectOneRadio>
+                    </h:panelGrid>
+
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    
+                    <h:panelGrid>
+                        <p:outputLabel value="Exterior:" />
+                        <p:selectOneRadio id="exterior" value="#{habitacionSeleccionController.filtro.exteriorSn}">
+                            <f:selectItem itemLabel="Si" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="2" />
+                            <f:selectItem itemLabel="Todos" itemValue="0"/>
+                        </p:selectOneRadio>
+                    </h:panelGrid>
+
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    
+                    <h:panelGrid>
+                        <p:outputLabel value="Movilidad reducida:" />
+                        <p:selectOneRadio id="movilidad" value="#{habitacionSeleccionController.filtro.movReducidaSn}">
+                            <f:selectItem itemLabel="Si" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="2" />
+                            <f:selectItem itemLabel="Todos" itemValue="0"/>
+                        </p:selectOneRadio>
+                    </h:panelGrid>
+                    
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    
+                    <h:panelGrid>
+                        <p:outputLabel value="Cama suplet.:" />
+                        <p:selectOneRadio id="camasupl" value="#{habitacionSeleccionController.filtro.camaSuplSn}">
+                            <f:selectItem itemLabel="Si" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="2" />
+                            <f:selectItem itemLabel="Todos" itemValue="0"/>
+                        </p:selectOneRadio>
+                    </h:panelGrid>
+                    
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                </h:panelGrid>
+            </h:panelGrid>
+
+            <p:separator/>
+
+            <p:commandButton value="Comprobar disponibilidad" ajax="false" 
+                             action="#{habitacionSeleccionController.doComprobarDisponibilidad}"/>
+            <p:commandButton value="Limpiar" ajax="false" action="#{habitacionSeleccionController.doLimpiar}"/>
+                
+            <h:outputText value="&lt;br/&gt;" escape="false" />
+            
+            <!-- Mensajes -->
+            <h:panelGroup id="messagePanel" layout="block">
+                <p:messages/>
+            </h:panelGroup>
+            
+            
+            <h4>Habitaciones disponibles:</h4>
+            <p:dataTable var="item" value="#{habitacionSeleccionController.lista}" 
+                         paginator="true" rows="10" paginatorPosition="top" emptyMessage="No hay habitaciones disponibles para los filtros establecidos.">
+                
+                <p:column headerText="Código" styleClass="center" width="8%">
+                    <h:outputText value="#{item.codigo}"/>
+                </p:column>
+
+                <p:column headerText="Tipo habitación" styleClass="center">
+                    <h:outputText value="#{item.tipoHabitacion.toString()}"/>
+                </p:column>
+                
+                <p:column headerText="Para fumadores" styleClass="center">
+                    <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{item.fumadorSn}"/>
+                </p:column>
+                
+                <p:column headerText="Es exterior" styleClass="center">
+                    <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{item.exteriorSn}"/>
+                </p:column>
+                
+                <p:column headerText="Adap. mov. reducida" styleClass="center">
+                    <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{item.movReducidaSn}"/>
+                </p:column>
+                
+                <p:column headerText="Cama suplet." styleClass="center">
+                    <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{item.camaSuplSn}"/>
+                </p:column>
+                
+                <p:column headerText="Precio" styleClass="right" width="10%">
+                    <h:outputText value="#{item.tipoHabitacion.precio}">
+                        <f:convertNumber pattern="#,##0.00 €" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column width="20" styleClass="center">
+                    <p:commandButton value="" styleClass="lista-select-btn-img" 
+                                     actionListener="#{habitacionSeleccionController.doSeleccionar(item)}"/>
+                </p:column>
+                
+            </p:dataTable>
+        </h:form>
+    </h:body>
+     
+</html>

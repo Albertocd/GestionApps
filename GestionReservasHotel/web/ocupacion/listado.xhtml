@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/templatePrincipal.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <ui:define name="top">
+        Ocupación actual
+    </ui:define>
+
+    <ui:define name="content">
+             
+        <h:form>
+
+            <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+            
+            <h3>Ocupación actual <h:outputText value="(#{ocupacionController.fechaActual})"/></h3>
+            <p:separator/>
+
+            <p:dataTable id="ocupacionlista" value="#{ocupacionController.listaOcupacion}" var="item" 
+                         emptyMessage="No se han encontrado datos." sortBy="#{item.habitacion.codigo}" sortOrder="ascending">
+                
+                <p:column headerText="Habitación" styleClass="center" width="10%">
+                    <h:outputText value="#{item.habitacion.codigo}"/>
+                </p:column>
+                
+                <p:column headerText="Activa" styleClass="center" width="6%">
+                    <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{item.habitacion.activoSn}"/>
+                </p:column>
+
+                <p:column headerText="Tipo habitación" styleClass="center" width="10%">
+                    <h:outputText value="#{item.habitacion.tipoHabitacion.toString()}"/>
+                </p:column>
+                
+                <p:column headerText="Ocupada" styleClass="center" width="8%">
+                    <h:graphicImage url="/resources/img/hab_ocupada.gif" rendered="#{item.ocupadaSn}"/>
+                </p:column>
+                
+                <p:column headerText="Reserva" styleClass="center" width="12%">
+                    <h:outputText value="#{item.reservaDetalle.reservaCab.referencia}"/>
+                </p:column>
+                
+                <p:column headerText="Fecha entrada" styleClass="center" width="10%">
+                    <h:outputText value="#{item.reservaDetalle.reservaCab.fechaEntrada}">
+                        <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Fecha salida" styleClass="center" width="10%">
+                    <h:outputText value="#{item.reservaDetalle.reservaCab.fechaSalida}">
+                        <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Importe" styleClass="center" width="10%">
+                    <h:outputText value="#{item.reservaDetalle.reservaCab.importeTotal}">
+                        <f:convertNumber pattern="#,##0.00 €" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="DNI" styleClass="center" width="10%">
+                    <h:outputText value="#{item.reservaDetalle.reservaCab.cliente.dni}"/>
+                </p:column>
+                
+                <p:column headerText="Cliente" styleClass="center" width="30%">
+                    <h:outputText value="#{item.reservaDetalle.reservaCab.cliente.toString()}"/>
+                </p:column>
+                
+                <p:column headerText="Procedencia" styleClass="center" width="15%">
+                    <h:outputText value="#{item.reservaDetalle.reservaCab.cliente.provincia.toString()}"/>
+                </p:column>
+                
+                <f:facet name="footer">
+                    Total habitaciones: #{fn:length(ocupacionController.listaOcupacion)}
+                </f:facet>
+            </p:dataTable>
+
+            <p:separator/>
+
+            <p:commandButton value="Refrescar">    
+                <p:ajax event="click" listener="#{ocupacionController.doListar()}" update="ocupacionlista" />  
+            </p:commandButton>
+            
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

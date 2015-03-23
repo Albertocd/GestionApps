@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../templatePrincipal.xhtml">
+
+            <ui:define name="top">
+                Mantenimiento de habitaciones
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h3>Modificación de habitación</h3>
+                <p:separator/>
+                
+                <h:form>
+
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+                    
+                    <p:focus for="codigo"/>
+                    
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value="Código:" for="codigo"/>
+                        <p:inputText id="codigo" label="codigo" size="8"
+                                     value="#{habitacionController.habitacionActual.codigo}"
+                                     readonly="true" style="background-color: lightgray"/>
+                        
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <p:outputLabel value="Descripción:" for="descripcion"/>
+                        <p:inputTextarea id="descripcion" rows="3" cols="10" counter="display" maxlength="50" counterTemplate="{0} caracteres restantes." 
+                                         autoResize="false" value="#{habitacionController.habitacionActual.descripcion}" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText id="display" />
+                        
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <p:outputLabel for="tipo" value="Tipo:" />
+                        <p:selectOneMenu id="tipo" value="#{habitacionController.habitacionActual.tipoHabitacion.idTipoHabitacion}" >
+                            <f:selectItems value="#{tipoHabitacionController.listaFiltro}" var="item"
+                                           itemLabel="#{item.nombre}" itemValue="#{item.idTipoHabitacion}" />
+                        </p:selectOneMenu>
+                        <p:message for="tipo" />
+                        
+                        <h:outputText value="Fumadores: " />
+                        <h:selectBooleanCheckbox value="#{habitacionController.habitacionActual.fumadorSn}"/>
+                        
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <h:outputText value="Exterior: " />
+                        <h:selectBooleanCheckbox value="#{habitacionController.habitacionActual.exteriorSn}"/>
+                        
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <h:outputText value="Mov. reducida: " />
+                        <h:selectBooleanCheckbox value="#{habitacionController.habitacionActual.movReducidaSn}"/>
+                        
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <h:outputText value="Cama suplet.: " />
+                        <h:selectBooleanCheckbox value="#{habitacionController.habitacionActual.camaSuplSn}"/>
+                        
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <h:outputText value="Activo: " />
+                        <h:selectBooleanCheckbox value="#{habitacionController.habitacionActual.activoSn}"/>
+                        
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Guardar" action="#{habitacionController.doModificacion}"/>
+                        <p:commandButton value="Cancelar" immediate="true" action="#{habitacionController.doPrepararListado}"/>
+                    </h:panelGrid>
+
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

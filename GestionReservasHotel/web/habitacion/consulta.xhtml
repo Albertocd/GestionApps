@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../templatePrincipal.xhtml">
+
+            <ui:define name="top">
+                Mantenimiento de habitaciones
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h3>Consulta de habitación</h3>
+                <p:separator/>
+                
+                <h:form>
+                    
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Código:" for="codigo"/>
+                        <p:inputText id="codigo" label="codigo" size="8"
+                                     value="#{habitacionController.habitacionActual.codigo}"
+                                     readonly="true" style="background-color: lightgray"/>
+                        
+                        
+                        <p:outputLabel value="Descripción:" for="descripcion"/>
+                        <p:inputTextarea id="descripcion" rows="3" cols="10" readonly="true" 
+                                         autoResize="false" value="#{habitacionController.habitacionActual.descripcion}" 
+                                         style="background-color: lightgray"/>
+
+                        
+                        <p:outputLabel value="Tipo:" for="tipo"/>
+                        <p:inputText id="tipo" label="tipo" size="10"
+                                     value="#{habitacionController.habitacionActual.tipoHabitacion.toString()}"
+                                     readonly="true" style="background-color: lightgray"/>
+
+                        
+                        <p:outputLabel value="Fumadores: " />
+                        <p:outputLabel>
+                            <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{habitacionController.habitacionActual.fumadorSn}"/>
+                        </p:outputLabel>
+                        
+                        <h:outputText value="Exterior: " />
+                        <p:outputLabel>
+                            <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{habitacionController.habitacionActual.exteriorSn}"/>
+                        </p:outputLabel>
+                            
+                        <h:outputText value="Mov. reducida: " />
+                        <p:outputLabel>
+                            <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{habitacionController.habitacionActual.movReducidaSn}"/>
+                        </p:outputLabel>  
+                            
+                        <h:outputText value="Cama suplet.: " />
+                        <p:outputLabel>
+                            <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{habitacionController.habitacionActual.camaSuplSn}"/>
+                        </p:outputLabel>
+                            
+                        <h:outputText value="Activo: " />
+                        <p:outputLabel>
+                            <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{habitacionController.habitacionActual.activoSn}"/>
+                        </p:outputLabel>
+                            
+                    </h:panelGrid>
+                        
+                    <p:separator/>
+
+                    <h:panelGrid>
+                        <p:commandButton value="Volver" action="#{habitacionController.doPrepararListado}"/>
+                    </h:panelGrid>
+
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/gestion_reservas_hotel?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.show_sql">true</property>
+    
+    <mapping class="reservashotel.persistence.entities.Cargo"/>
+    <mapping class="reservashotel.persistence.entities.Cliente"/>
+    <mapping class="reservashotel.persistence.entities.Habitacion"/>
+    <mapping class="reservashotel.persistence.entities.TipoHabitacion"/>
+    <mapping class="reservashotel.persistence.entities.Provincia"/>
+    <mapping class="reservashotel.persistence.entities.Consumo"/>
+    <mapping class="reservashotel.persistence.entities.EstadoReserva"/>
+    <mapping class="reservashotel.persistence.entities.Usuario"/>
+    <mapping class="reservashotel.persistence.entities.ReservaCab"/>
+    <mapping class="reservashotel.persistence.entities.ReservaDet"/>
+  </session-factory>
+</hibernate-configuration>

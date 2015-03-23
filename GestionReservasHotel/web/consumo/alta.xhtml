@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../templatePrincipal.xhtml">
+
+            <ui:define name="top">
+                Gestión de consumos
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h:form>
+
+                    <h:outputScript library="js" name="es_calendar.js"/>
+
+                    <h:panelGrid columns="1">
+                        <h:panelGrid columns="1">
+                            <h3>Nuevo consumo para la reserva: </h3>
+                        </h:panelGrid>
+                        <h:panelGrid columns="22">
+                            <h:outputText value="#{consumoController.reservaActual.referencia}" />
+                            <p:spacer width="10" height="10" />
+                            <h:outputText value="(#{consumoController.reservaActual.cliente.toString()} " />
+                            <p:spacer width="10" height="10" />
+                            <h:outputText value="#{consumoController.reservaActual.fechaEntrada}" >
+                                <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                            </h:outputText>
+                            <h:outputText value="  --  " />
+                            <h:outputText value="#{consumoController.reservaActual.fechaSalida}" >
+                                <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                            </h:outputText>
+                            <h:outputText value=")" />
+                        </h:panelGrid>
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <h:panelGrid columns="1">
+
+                        <h:panelGrid columns="5">
+                            <p:outputLabel value="Cargo:" for="cargocodigo"/>
+                            <p:inputText id="cargocodigo" value="#{consumoController.consumoActual.cargo.codigo}"
+                                         size="8" required="true"
+                                         requiredMessage="Es necesario seleccionar un cargo.">
+                                <f:ajax event="blur" listener="#{consumoController.doCargoBuscar()}" render="cargocodigo cargonombre" />
+                            </p:inputText>
+
+                            <p:inputText id="cargonombre" value="#{consumoController.consumoActual.cargo.nombre}"
+                                         size="40" readonly="true" style="background-color: lightgray"/>
+
+                            <p:commandButton value="" styleClass="btn-open-img" 
+                                                             actionListener="#{cargoSeleccionController.doPrepararSeleccion}" immediate="true">
+                                <p:ajax event="dialogReturn" listener="#{consumoController.doCargoSeleccionado}" 
+                                                        update="cargocodigo, cargonombre" />
+                            </p:commandButton>
+                            <p:message for="cargocodigo" display="icon"/>
+                        </h:panelGrid>    
+
+                        <h:panelGrid columns="3">
+
+                            <p:outputLabel value="Cantidad:" for="cantidad"/>
+                            <p:spinner id="cantidad" value="#{consumoController.consumoActual.cantidad}" 
+                                       min="1" required="true" size="3" 
+                                       requiredMessage="Debe insertar la cantidad."/>
+                            <p:message for="cantidad" />
+                            
+                            <p:outputLabel for="fecha" value="Fecha:" />
+                            <p:calendar id="fecha" value="#{consumoController.consumoActual.fechaConsumo}" 
+                                        mode="inline" required="true"
+                                        requiredMessage="Es obligatoria la fecha de consumo." locale="es"/>
+                            <p:message for="fecha" />
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Guardar" action="#{consumoController.doNuevoConsumo()}"/>
+                        <p:commandButton value="Cancelar" immediate="true" action="#{consumoController.doPrepararListado()}"/>
+                    </h:panelGrid>
+
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

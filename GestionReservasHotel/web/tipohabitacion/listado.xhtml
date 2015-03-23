@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="/templatePrincipal.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <ui:define name="top">
+        Mantenimiento de tipos de habitación
+    </ui:define>
+
+    <ui:define name="content">
+             
+        <h:form>
+           
+            <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+            
+            <p:focus for="nombre"/>
+            
+            <h3>Filtros de búsqueda</h3>
+            <p:separator/>
+            
+            <h:panelGrid columns="20">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Nombre:" for="nombre"/>
+                    <p:inputText id="nombre" label="nombre" size="18"
+                                 value="#{tipoHabitacionController.filtro.nombre}"
+                                 maxlength="15"/>
+                </h:panelGrid>
+
+                <p:spacer width="50"/>
+                
+                <p:outputLabel value="Activo:" />
+                <h:panelGrid columns="3">
+                    <p:selectOneRadio id="activo" value="#{tipoHabitacionController.filtro.activoSn}">
+                        <f:selectItem itemLabel="Si" itemValue="1" />
+                        <f:selectItem itemLabel="No" itemValue="2" />
+                        <f:selectItem itemLabel="Todos" itemValue="0"/>
+                    </p:selectOneRadio>
+                </h:panelGrid>
+                
+                <p:spacer width="50"/>
+                
+                <h:panelGrid columns="3">
+
+                    <h:outputLabel value="Rango de precio:" for="precio"/>
+                    <h:panelGrid columns="3">
+
+                        <p:outputLabel value="Desde:" for="preciodesde"/>
+                        <p:inputText id="preciodesde" label="Precio desde" size="5"
+                                     value="#{tipoHabitacionController.filtro.precioDesde}"
+                                     maxlength="6"/>
+                        <h:outputText value="€" escape="false" />
+
+                        <p:outputLabel value="Hasta:" for="preciohasta"/>
+                        <p:inputText id="preciohasta" label="Precio hasta" size="5"
+                                     value="#{tipoHabitacionController.filtro.precioHasta}"
+                                     maxlength="6"/>
+                        <h:outputText value="€" escape="false" />
+                    </h:panelGrid>
+
+                </h:panelGrid>    
+            </h:panelGrid>
+            
+            <p:separator/>
+
+            <h:panelGrid columns="2">
+                <p:commandButton value="Buscar" ajax="false" action="#{tipoHabitacionController.doBuscar()}"/>
+                <p:commandButton value="Limpiar" ajax="false" action="#{tipoHabitacionController.doPrepararListadoVacio()}"/>
+            </h:panelGrid>
+
+            <h3>Listado de tipos de habitación</h3>
+            <p:separator/>
+
+            <p:commandButton value="Nuevo tipo" action="#{tipoHabitacionController.doPrepararAlta}"/>
+            <h:outputText value="&lt;br/&gt;" escape="false" />
+            
+            <p:dataTable id="listado" value="#{tipoHabitacionController.lista}" var="item" emptyMessage="No se han encontrado datos." 
+                         paginator="true" rows="10" paginatorPosition="top">
+                
+                <p:column headerText="Nombre" styleClass="center" width="30%">
+                    <h:outputText value="#{item.nombre}"/>
+                </p:column>
+
+                <p:column headerText="Precio" styleClass="center" width="15%">
+                    <h:outputText value="#{item.precio}">
+                        <f:convertNumber pattern="#,##0.00 €" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Activo" styleClass="center" width="8%">
+                    <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{item.activoSn}"/>
+                </p:column>
+                
+                <p:column headerText="Acciones" width="200" styleClass="center">
+                    <p:commandButton value="" styleClass="lista-ver-btn-img" ajax="false" action="#{tipoHabitacionController.doPrepararConsulta(item)}" />
+                    <p:commandButton value="" styleClass="lista-modif-btn-img" ajax="false" action="#{tipoHabitacionController.doPrepararModificacion(item)}" />
+                    <p:commandButton value="" styleClass="lista-borrar-btn-img" ajax="false" action="#{tipoHabitacionController.doEliminar(item)}" />
+                        
+                </p:column>  
+                
+                <f:facet name="footer">
+                    Total: #{fn:length(tipoHabitacionController.lista)}
+                </f:facet>
+            </p:dataTable>
+            
+            
+            
+        </h:form>
+        
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" >
+
+    <body>
+        <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                        template="./templateLogin.xhtml">
+
+            <ui:define name="top">
+                <h2>Gestión de Reservas de Hotel</h2>
+            </ui:define>
+
+            <ui:define name="content">
+
+                <p:separator />
+                
+                <section class="contenedor">
+                    <h:form class="login">
+
+                        <h2>Acceso</h2>
+                        
+                        <p:panel id="panel"> 
+                            <p:focus for="usuario"/>
+
+                            <h:panelGrid id="formulario" columns="3" cellpadding="5">
+                                <p:outputLabel value="Usuario:" for="usuario"/>
+                                <p:inputText pt:placeholder="Usuario" id="usuario" label="usuario" size="20"
+                                             value="#{usuarioController.usuarioActual.nombreUsuario}"
+                                             maxlength="10" required="true" requiredMessage="El usuario es obligatorio"/>
+                                <p:message for="usuario" display="icon" />
+
+                                <p:outputLabel value="Contraseña:" for="contrasena"/>
+                                <p:password pt:placeholder="Contraseña" id="contrasena" label="contrasena" size="20" 
+                                             value="#{usuarioController.usuarioActual.contrasena}"
+                                             maxlength="10" required="true" requiredMessage="La contraseña es obligatoria"/>
+                                <p:message for="contrasena" display="icon"/>
+
+                            </h:panelGrid>
+
+                            <section style="overflow: hidden;">
+                                <h:panelGrid columns="2" style="float: right">
+                                    <div  style="float: right">
+                                    <p:commandButton id="entrar" value="Entrar" update="formulario" 
+                                                     action="#{usuarioController.doValidaUsuario}"/>
+                                    </div>
+                                </h:panelGrid>
+                            </section>
+                                
+                            <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+
+                        </p:panel>
+
+                    </h:form>
+                </section>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

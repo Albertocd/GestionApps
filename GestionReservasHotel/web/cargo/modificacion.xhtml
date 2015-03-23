@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../templatePrincipal.xhtml">
+
+            <ui:define name="top">
+                Mantenimiento de cargos
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h3>Modificación de cargo</h3>
+                <p:separator/>
+                
+                <h:form>
+ 
+                    <p:focus for="nombre"/>
+                    
+                    <h:panelGrid id="formulario" columns="4">
+                        
+                        <p:outputLabel value="Código:" for="codigo"/>
+                        <p:inputText id="codigo" label="codigo" size="8"
+                                     value="#{cargoController.cargoActual.codigo}"
+                                     readonly="true" style="background-color: lightgray"/>
+
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <p:outputLabel value="Nombre:" for="nombre"/>
+                        <p:inputText id="nombre" label="nombre" size="18"
+                                     value="#{cargoController.cargoActual.nombre}"
+                                     maxlength="30" required="true" 
+                                     requiredMessage="El nombre es obligatorio."/>
+                        <p:message for="nombre" display="icon"/>
+                        
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <p:outputLabel value="Descripción:" for="descripcion"/>
+                        <p:inputTextarea id="descripcion" rows="3" cols="20" counter="display" maxlength="50" counterTemplate="{0} caracteres restantes." 
+                                         autoResize="false" value="#{cargoController.cargoActual.descripcion}" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText id="display" />
+                        
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <p:outputLabel value="Precio(€):" for="precio"/>
+                        <p:inputText id="precio" label="precio" size="10" 
+                                     value="#{cargoController.cargoActual.precio}"
+                                     maxlength="10" required="true"
+                                     requiredMessage="Es necesario insertar el precio."
+                                     validatorMessage="El precio debe ser un valor numérico mayor de 0."
+                                     style="text-align: right">
+                                     <f:validateDoubleRange minimum="0.0"/> 
+                        </p:inputText>
+                        <p:message for="precio" display="icon"/>
+
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <h:outputText value="Activo: " />
+                        <h:selectBooleanCheckbox value="#{cargoController.cargoActual.activoSn}"/>
+                        
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Guardar" update="formulario" action="#{cargoController.doModificacion}"/>
+                        <p:commandButton value="Cancelar" immediate="true" action="#{cargoController.doPrepararListado}"/>
+                    </h:panelGrid>
+
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,290 @@
+-- -----------------------------------------------------
+-- Schema gestion_reservas_hotel
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `gestion_reservas_hotel` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `gestion_reservas_hotel` ;
+
+-- ------------------------------------------------------------------------
+-- Table `gestion_reservas_hotel`.`usuarios`
+-- ------------------------------------------------------------------------
+DROP TABLE IF EXISTS `gestion_reservas_hotel`.`usuarios` ;
+
+CREATE TABLE IF NOT EXISTS `gestion_reservas_hotel`.`usuarios` (
+  `id_usuario` INT NOT NULL AUTO_INCREMENT,
+  `nombre_usuario` VARCHAR(10) NOT NULL UNIQUE,
+  `contrasena` VARCHAR(10) NOT NULL,
+  `fecha_alta` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  `fecha_baja` DATETIME NULL,
+  `activo_sn` INT(1) NOT NULL DEFAULT 1,
+  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_usuario`)
+);
+
+-- -----------------------------------------------------------------------------
+-- Table `gestion_reservas_hotel`.`provincias`
+-- ------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `gestion_reservas_hotel`.`provincias` ;
+
+CREATE TABLE IF NOT EXISTS `gestion_reservas_hotel`.`provincias` (
+  `id_provincia` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`id_provincia`)
+);
+
+-- -------------------------------------------------------------------------
+-- Table `gestion_reservas_hotel`.`clientes`
+-- --------------------------------------------------------------------------
+DROP TABLE IF EXISTS `gestion_reservas_hotel`.`clientes` ;
+
+CREATE TABLE IF NOT EXISTS `gestion_reservas_hotel`.`clientes` (
+  `id_cliente` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(30) NOT NULL,
+  `apellido1` VARCHAR(30) NOT NULL,
+  `apellido2` VARCHAR(30) NOT NULL,
+  `dni` VARCHAR(10) NOT NULL UNIQUE,
+  `fecha_nacimiento` DATE NOT NULL,
+  `email` VARCHAR(30) NOT NULL,
+  `telefono` VARCHAR(15) NOT NULL,
+  `cuenta_bancaria` VARCHAR(50) NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_provincia` INT NOT NULL,
+  PRIMARY KEY (`id_cliente`),
+  CONSTRAINT fk_cliente_provincia FOREIGN KEY (id_provincia) REFERENCES provincias(id_provincia)
+);
+
+-- ---------------------------------------------------------------------------------------
+-- Table `gestion_reservas_hotel`.`tipos_habitacion`
+-- ---------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `gestion_reservas_hotel`.`tipos_habitacion` ;
+
+CREATE TABLE IF NOT EXISTS `gestion_reservas_hotel`.`tipos_habitacion` (
+  `id_tipo_habitacion` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(15) NOT NULL UNIQUE,
+  `precio` DECIMAL(7,2) NOT NULL,
+  `activo_sn` INT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id_tipo_habitacion`)
+);
+
+-- --------------------------------------------------------------------------------
+-- Table `gestion_reservas_hotel`.`habitaciones`
+-- --------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `gestion_reservas_hotel`.`habitaciones` ;
+
+CREATE TABLE IF NOT EXISTS `gestion_reservas_hotel`.`habitaciones` (
+  `id_habitacion` INT NOT NULL AUTO_INCREMENT,
+  `codigo` VARCHAR(5) NOT NULL UNIQUE,
+  `fumador_sn` INT(1) NULL DEFAULT 0,
+  `mov_reducida_sn` INT(1) NULL DEFAULT 0,
+  `exterior_sn` INT(1) NULL DEFAULT 0,
+  `cama_supl_sn` INT(1) NULL DEFAULT 0,
+  `id_tipo_habitacion` INT NOT NULL,
+  `descripcion` VARCHAR(50),
+  `activo_sn` INT(1) NOT NULL DEFAULT 1,
+  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_habitacion`),
+  CONSTRAINT fk_tipo_habitacion FOREIGN KEY (id_tipo_habitacion) REFERENCES tipos_habitacion(id_tipo_habitacion)
+);
+
+-- --------------------------------------------------------------------------------------
+-- Table `gestion_reservas_hotel`.`estados_reserva`
+-- --------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `gestion_reservas_hotel`.`estados_reserva` ;
+
+CREATE TABLE IF NOT EXISTS `gestion_reservas_hotel`.`estados_reserva` (
+  `id_estado_reserva` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(15) NOT NULL UNIQUE,
+  `activo_sn` INT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id_estado_reserva`)
+);
+
+-- -------------------------------------------------------------------------------
+-- Table `gestion_reservas_hotel`.`reservas_cab`
+-- -------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `gestion_reservas_hotel`.`reservas_cab` ;
+
+CREATE TABLE IF NOT EXISTS `gestion_reservas_hotel`.`reservas_cab` (
+  `id_reserva_cab` INT NOT NULL AUTO_INCREMENT,
+  `referencia` VARCHAR(15) UNIQUE NOT NULL,
+  `fecha_registro` DATE NOT NULL,
+  `fecha_entrada` DATE NOT NULL,
+  `fecha_salida` DATE NOT NULL,
+  `observaciones` VARCHAR(60) NULL,
+  `id_cliente` INT NOT NULL,
+  `importe_total` DECIMAL(7,2) NOT NULL DEFAULT 0.0,
+  `id_estado_reserva` INT NOT NULL,
+  `id_usuario` INT NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_reserva_cab`),
+  CONSTRAINT fk_reserva_cab_cliente FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente),
+  CONSTRAINT fk_reserva_cab_estado FOREIGN KEY (id_estado_reserva) REFERENCES estados_reserva(id_estado_reserva),
+  CONSTRAINT fk_reserva_cab_usuario FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+);
+
+-- ---------------------------------------------------------------------
+-- Table `gestion_reservas_hotel`.`cargos`
+-- ---------------------------------------------------------------------
+DROP TABLE IF EXISTS `gestion_reservas_hotel`.`cargos` ;
+
+CREATE TABLE IF NOT EXISTS `gestion_reservas_hotel`.`cargos` (
+  `id_cargo` INT NOT NULL AUTO_INCREMENT,
+  `codigo` VARCHAR(5) NOT NULL UNIQUE,
+  `nombre` VARCHAR(30) NOT NULL UNIQUE,
+  `descripcion` VARCHAR(50),
+  `precio` DECIMAL(7,2) NOT NULL,
+  `activo_sn` INT(1) NOT NULL DEFAULT 1,
+  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_cargo`)
+);
+
+-- ---------------------------------------------------------------------------------
+-- Table `gestion_reservas_hotel`.`reservas_det`
+-- ---------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `gestion_reservas_hotel`.`reservas_det` ;
+
+CREATE TABLE IF NOT EXISTS `gestion_reservas_hotel`.`reservas_det` (
+  `id_reserva_det` INT NOT NULL AUTO_INCREMENT,
+  `id_reserva_cab` INT NOT NULL,
+  `id_habitacion` INT NOT NULL,
+  PRIMARY KEY (`id_reserva_det`),
+  CONSTRAINT fk_reserva_det_reserva_cab FOREIGN KEY (id_reserva_cab) REFERENCES reservas_cab(id_reserva_cab),
+  CONSTRAINT fk_reserva_det_habitacion FOREIGN KEY (id_habitacion) REFERENCES habitaciones(id_habitacion)
+);
+
+-- ---------------------------------------------------------------------------
+-- Table `gestion_reservas_hotel`.`consumos`
+-- ---------------------------------------------------------------------------
+DROP TABLE IF EXISTS `gestion_reservas_hotel`.`consumos` ;
+
+CREATE TABLE IF NOT EXISTS `gestion_reservas_hotel`.`consumos` (
+  `id_consumo` INT NOT NULL AUTO_INCREMENT,
+  `fecha_consumo` DATE NOT NULL,
+  `cantidad` INT(5) NOT NULL,
+  `id_cargo` INT NOT NULL,
+  `id_reserva_cab` INT NOT NULL,
+  PRIMARY KEY (`id_consumo`),
+  CONSTRAINT fk_consumo_cargo FOREIGN KEY (id_cargo) REFERENCES cargos(id_cargo),
+  CONSTRAINT fk_consumo_reserva_cab FOREIGN KEY (id_reserva_cab) REFERENCES reservas_cab(id_reserva_cab)
+);
+
+-- -----------------------------------------------------
+-- INSERTS
+-- -----------------------------------------------------
+
+INSERT INTO `provincias` (`id_provincia`, `nombre`) VALUES 
+(2,'Albacete'),
+(3,'Alicante'),
+(4,'Almería'),
+(1,'Álava'),
+(33,'Asturias'),
+(5,'Ávila'),
+(6,'Badajoz'),
+(7,'Baleares, Islas'),
+(8,'Barcelona'),
+(48,'Bizkaia'),
+(9,'Burgos'),
+(10,'Cáceres'),
+(11,'Cádiz'),
+(39,'Cantabria'),
+(12,'Castellón'),
+(51,'Ceuta'),
+(13,'Ciudad Real'),
+(14,'Córdoba'),
+(15,'Coruña, A'),
+(16,'Cuenca'),
+(20,'Gipuzkoa'),
+(17,'Gerona'),
+(18,'Granada'),
+(19,'Guadalajara'),
+(21,'Huelva'),
+(22,'Huesca'),
+(23,'Jaén'),
+(24,'León'),
+(27,'Lugo'),
+(25,'Lleida'),
+(28,'Madrid'),
+(29,'Málaga'),
+(52,'Melilla'),
+(30,'Murcia'),
+(31,'Navarra'),
+(32,'Ourense'),
+(34,'Palencia'),
+(35,'Palmas, Las'),
+(36,'Pontevedra'),
+(26,'Rioja, La'),
+(37,'Salamanca'),
+(38,'Santa Cruz de Tenerife'),
+(40,'Segovia'),
+(41,'Sevilla'),
+(42,'Soria'),
+(43,'Tarragona'),
+(44,'Teruel'),
+(45,'Toledo'),
+(46,'Valencia'),
+(47,'Valladolid'),
+(49,'Zamora'),
+(50,'Zaragoza');
+
+INSERT INTO `estados_reserva` (`id_estado_reserva`, `nombre`, `activo_sn`) VALUES 
+(1,'Reservada',1),
+(2,'Activa',1),
+(3,'Cerrada',1),
+(4,'Anulada',1),
+(5,'En proceso',0);
+
+INSERT INTO `tipos_habitacion` (`id_tipo_habitacion`, `nombre`, `precio`, `activo_sn`) VALUES 
+(1,'Simple',39.95,1),
+(2,'Doble',49.95,1),
+(3,'Triple',59.95,1),
+(4,'Suite',70.5,1),
+(5,'Literas',9.95,0);
+
+INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `contrasena`, `activo_sn`) VALUES 
+(1,'admin','12345',1),
+(2,'usuario1','12345',1),
+(3,'usuario2','12345',0);
+
+INSERT INTO `habitaciones` (`id_habitacion`, `codigo`, `fumador_sn`, `mov_reducida_sn`, `exterior_sn`, `cama_supl_sn`, `id_tipo_habitacion`, `descripcion`, `activo_sn`, `timestamp`) VALUES
+(1, '101', 1, 0, 1, 0, 2, 'Vistas al centro.', 1, current_date),
+(2, '102', 0, 1, 1, 0, 2, '', 1, current_date),
+(3, '103', 0, 1, 0, 1, 2, '', 1, current_date),
+(4, '104', 1, 0, 0, 1, 2, 'Cerrada temporal mente.', 0, current_date),
+(5, '105', 0, 0, 1, 1, 1, 'Vistas al centro.', 1, current_date),
+(6, '201', 1, 0, 0, 0, 1, 'No dispone de aire acondicionado.', 1, current_date),
+(7, '202', 1, 1, 1, 1, 4, '', 1, current_date),
+(8, '203', 1, 1, 1, 0, 4, '', 1, current_date),
+(9, '204', 0, 0, 0, 1, 3, 'Capacidad para dos camas extra.', 1, current_date),
+(11, '205', 1, 0, 0, 0, 1, '', 1, current_date),
+(12, '301', 0, 0, 1, 0, 2, 'Terraza', 1, current_date),
+(13, '302', 0, 1, 1, 0, 2, '', 1, current_date),
+(14, '303', 1, 1, 1, 1, 1, 'Vistas a las afueras.', 1, current_date),
+(15, '304', 0, 1, 0, 0, 1, '', 1, current_date),
+(16, '305', 0, 0, 1, 0, 3, '', 1, current_date),
+(17, '306', 1, 0, 0, 0, 3, 'Cerrada temporalmente por mejoras.', 0, current_date);
+
+INSERT INTO `cargos` (`id_cargo`, `codigo`, `nombre`, `descripcion`, `precio`, `activo_sn`, `timestamp`) VALUES
+(1, 'LVND1', 'LavanderiaA', 'Lavado de ropa interior.', '5.00', 1, current_date),
+(2, 'LVND2', 'Lavanderia2', 'Lavado de pantalones, camisas, camisetas...', '6.00', 1, current_date),
+(3, 'LVND3', 'Lavanderia3', 'Lavado de otro tipo de prendas.', '3.00', 1, current_date),
+(4, 'PKNG', 'Parking', 'Tarifa por parking diario en el garaje.', '4.00', 1, current_date),
+(5, 'PKNGM', 'Parking para motos', 'Tarifa diaria de parking para motos.', '2.00', 1, current_date),
+(6, 'PLNCH', 'Planchado', 'Tarifa de planchado.', '4.00', 1, current_date),
+(7, 'HFRED', 'Cargos extra', '', '10.00', 0, current_date),
+(8, 'MNB1', 'Botella pequeña agua', 'Botella pequeña de agua.', '1.50', 1, current_date),
+(9, 'MNB2', 'Botella grande agua', 'Botella grande de agua.', '2.00', 1, current_date),
+(10, 'STLT1', 'Partido de futbol', 'Precio por partido de fútbol por satélite.', '5.80', 1, current_date),
+(11, 'STLT2', 'Pelicula de estreno', 'Tarifa por película de estreno en satélite.', '3.20', 1, current_date);
+
+INSERT INTO `clientes` (`id_cliente`, `nombre`, `apellido1`, `apellido2`, `dni`, `fecha_nacimiento`, 
+`email`, `telefono`, `cuenta_bancaria`, `timestamp`, `id_provincia`) VALUES 
+(1, 'Maria Luisa', 'Campos', 'Rodriguez', '45678632F', '1948-04-03', 
+'marialuisaaa@hotmail.com', '634568976', 'ES57483384853994534', current_date, 3),
+(2, 'Pedro', 'Sánchez', 'Martín', '26842985U', '1970-02-23', 
+'psanchez@gmail.com', '698432190', 'ES93843727634823', current_date, 2),
+(3, 'Alberto', 'Sánchez', 'López', '89453627H', '1990-12-01', 
+'albsanlop@gmail.com', '634976895', 'ES9384838485343', current_date, 25),
+(4, 'Maria del Mar', 'Gutiérrez', 'Martín', '37895647S', '1985-10-17', 
+'mmar@hotmail.es', '675432190', 'ES9384763782893', current_date, 28),
+(5, 'Jose Luis', 'Perez', 'García', '27564738P', '1972-10-28', 
+'josejose@hotmail.com', '684324579', 'ES93845334782893', current_date, 31),
+(6, 'Maria José', 'Perez', 'García', '25674319B', '1963-05-05', 
+'mariajosemalaga@hotmail.com', '634217452', 'ES84965654432345', current_date, 29);

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="gestion_reservas_hotel"/>
+  <table-filter match-name="clientes"/>
+  <table-filter match-name="habitaciones"/>
+  <table-filter match-name="cargos"/>
+  <table-filter match-name="usuarios"/>
+  <table-filter match-name="estados_reserva"/>
+  <table-filter match-name="provincias"/>
+  <table-filter match-name="reservas_cab"/>
+  <table-filter match-name="reservas_det"/>
+  <table-filter match-name="consumos"/>
+  <table-filter match-name="tipos_habitacion"/>
+</hibernate-reverse-engineering>

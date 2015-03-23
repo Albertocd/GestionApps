@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../templatePrincipal.xhtml">
+
+            <ui:define name="top">
+                Mantenimiento de clientes
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h3>Consulta de cliente</h3>
+                <p:separator/>
+                
+                <h:form>
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Nombre:" for="nombre"/>
+                        <p:inputText id="nombre" label="nombre" size="20"
+                                     value="#{clienteController.clienteActual.nombre}"
+                                     readonly="true" style="background-color: lightgray"/>
+
+                        <p:outputLabel value="Primer apellido:" for="apellido1"/>
+                        <p:inputText id="apellido1" label="apellido1" size="20" 
+                                     value="#{clienteController.clienteActual.apellido1}"
+                                     readonly="true" style="background-color: lightgray"/>
+                        
+                        <p:outputLabel value="Segundo apellido:" for="apellido2"/>
+                        <p:inputText id="apellido2" label="apellido2" size="20" 
+                                     value="#{clienteController.clienteActual.apellido2}"
+                                     readonly="true" style="background-color: lightgray"/>
+                        
+                        <p:outputLabel value="DNI:" for="dni"/>
+                        <p:inputText id="dni" label="dni" size="10" value="#{clienteController.clienteActual.dni}"
+                                     readonly="true" style="background-color: lightgray"/>
+                        
+                        <p:outputLabel for="fechanacimiento" value="Fecha nacimiento:" />
+                        <p:inputText id="fechanacimiento" label="fechanacimiento" size="10" 
+                                     value="#{clienteController.clienteActual.fechaNacimiento}"
+                                     readonly="true" style="background-color: lightgray">
+                            <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                        </p:inputText>
+                        
+                        <p:outputLabel value="Correo electrónico:" for="email"/>
+                        <p:inputText id="email" label="email" size="30"
+                                     value="#{clienteController.clienteActual.email}"
+                                     readonly="true" style="background-color: lightgray"/>
+                        
+                        <p:outputLabel value="Teléfono:" for="telefono"/>
+                        <p:inputText id="telefono" label="telefono" size="12"
+                                     value="#{clienteController.clienteActual.telefono}"
+                                     readonly="true" style="background-color: lightgray"/>
+                        
+                        <p:outputLabel value="Cuenta bancaria:" for="cuentabancaria"/>
+                        <p:inputText id="cuentabancaria" label="cuentabancaria" size="30"
+                                     value="#{clienteController.clienteActual.cuentaBancaria}"
+                                     readonly="true" style="background-color: lightgray"/>
+
+                        <p:outputLabel value="Provincia:" for="provincia"/>
+                        <p:inputText id="provincia" label="provincia" size="30"
+                                     value="#{clienteController.clienteActual.provincia.toString()}"
+                                     readonly="true" style="background-color: lightgray"/>
+                        
+                    </h:panelGrid>
+                        
+                    <p:separator/>
+             
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Volver" action="#{clienteController.doPrepararListado}"/>
+                    </h:panelGrid>
+
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

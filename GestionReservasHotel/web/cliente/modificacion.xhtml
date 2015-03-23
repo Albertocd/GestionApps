@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../templatePrincipal.xhtml">
+
+            <ui:define name="top">
+                Mantenimiento de clientes
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h3>Modificación de cliente</h3>
+                <p:separator/>
+                
+                <h:form>
+
+                    <h:outputScript library="js" name="es_calendar.js"/>
+                    
+                    <p:focus for="nombre"/>
+                    
+                    <h:panelGrid id="formulario" columns="3">
+                        <h:panelGrid columns="3">
+
+                            <p:outputLabel value="Nombre:" for="nombre"/>
+                            <p:inputText id="nombre" label="nombre" size="20"
+                                         value="#{clienteController.clienteActual.nombre}"
+                                         maxlength="30" required="true" 
+                                         requiredMessage="El nombre es obligatorio."/>
+
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                            <p:outputLabel value="Primer apellido:" for="apellido1"/>
+                            <p:inputText id="apellido1" label="apellido1" size="20" 
+                                         value="#{clienteController.clienteActual.apellido1}"
+                                         maxlength="30" required="true"
+                                         requiredMessage="El primer apellido es obligatorio."/>
+
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                            <p:outputLabel value="Segundo apellido:" for="apellido2"/>
+                            <p:inputText id="apellido2" label="apellido2" size="20" 
+                                         value="#{clienteController.clienteActual.apellido2}"
+                                         maxlength="30" required="true"
+                                         requiredMessage="El segundo apellido es obligatorio."/>
+
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                            <p:outputLabel value="DNI:" for="dni"/>
+                            <p:inputText id="dni" label="dni" size="10" value="#{clienteController.clienteActual.dni}"
+                                         required="true" maxlength="10" styleClass="mayuscula"
+                                         requiredMessage="El DNI es obligatorio."/>
+
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                            <p:outputLabel for="fechanacimiento" value="Fecha nacimiento:" />
+                            <p:calendar id="fechanacimiento" value="#{clienteController.clienteActual.fechaNacimiento}" 
+                                        pattern="dd/MM/yyyy" mask="true" size="10" required="true" showOn="button"
+                                        requiredMessage="Debe insertar la fecha de nacimiento." locale="es"/>
+
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                            <p:outputLabel value="Correo electrónico:" for="email"/>
+                            <p:inputText id="email" label="email" size="30"
+                                         value="#{clienteController.clienteActual.email}"
+                                         maxlength="30" required="true"
+                                         requiredMessage="Dato obligatorio."
+                                         validatorMessage="Inserte el correo electrónico.">
+
+                                         <f:validateRegex
+                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" 
+                                         />
+                            </p:inputText>
+
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                            <p:outputLabel value="Teléfono:" for="telefono"/>
+                            <p:inputText id="telefono" label="telefono" size="12"
+                                         value="#{clienteController.clienteActual.telefono}"
+                                         maxlength="10" required="true"
+                                         requiredMessage="El teléfono es obligatorio."
+                                         validatorMessage="El teléfono debe contener carateres numéricos.">
+                                         <f:validateRegex pattern="[0-9]*" />
+                            </p:inputText>
+
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                            <p:outputLabel value="Cuenta bancaria:" for="cuentabancaria"/>
+                            <p:inputText id="cuentabancaria" label="cuentabancaria" size="30"
+                                         value="#{clienteController.clienteActual.cuentaBancaria}"
+                                         maxlength="50" required="true"
+                                         requiredMessage="Inserte número de cuenta bancaria."/>
+
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                        </h:panelGrid>
+
+                        
+                            <p:outputLabel for="provincia" value="Provincia:" />
+                            <p:selectOneListbox id="provincia" value="#{clienteController.clienteActual.provincia}" 
+                                                var="provincia" filter="true" filterMatchMode="contains"
+                                                required="true" requiredMessage="Seleccione la provincia de procedencia.">
+                                <f:selectItems value="#{provinciaController.lista}" var="item" itemLabel="#{item.nombre}" itemValue="#{item}" />
+                                    <p:column>
+                                        <h:outputText value="#{provincia.nombre}" />
+                                    </p:column>
+                            </p:selectOneListbox>
+                            
+                          
+                    </h:panelGrid>
+                        
+                    <p:separator/>
+                    
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Guardar" update="formulario" action="#{clienteController.doModificacion}"/>
+                        <p:commandButton value="Cancelar" immediate="true" action="#{clienteController.doPrepararListado}"/>
+                    </h:panelGrid>
+                    
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+                   
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

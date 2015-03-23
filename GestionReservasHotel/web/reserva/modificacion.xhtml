@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../templatePrincipal.xhtml">
+
+            <ui:define name="top">
+                Gestión de Reservas
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h3>Modificar reserva</h3>
+                <p:separator/>
+                
+                <h:form>
+                    
+                    <h:outputScript library="js" name="es_calendar.js"/>
+                    
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+
+                    <h:panelGrid id="formulario" columns="3">
+                        <h:panelGrid columns="1">
+
+                            <h:panelGrid columns="5">
+                                <p:outputLabel value="Cliente:" for="clientedni"/>
+                                <p:inputText id="clientedni" value="#{reservaController.reservaActual.cliente.dni}"
+                                             size="15" maxlength="10" required="true"
+                                             requiredMessage="Seleccione cliente.">
+                                   <f:ajax event="blur" listener="#{reservaController.doClienteBuscar}" render="clientedni clientenombre" />
+                                </p:inputText>
+
+                                <p:inputText id="clientenombre" value="#{reservaController.reservaActual.cliente.toString()}"
+                                             size="40" readonly="true" style="background-color: lightgray"/>
+
+                                <p:commandButton value="" styleClass="btn-open-img" 
+                                                 actionListener="#{clienteSeleccionController.doPrepararSeleccion}" immediate="true">
+                                    <p:ajax event="dialogReturn" listener="#{reservaController.doClienteSeleccionado}" 
+                                            update="clientedni, clientenombre" />
+
+                                </p:commandButton>  
+                                <p:message for="clientedni" display="icon"/>
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="15">
+
+                                <p:outputLabel value="Fecha de entrada:" for="fechaentrada" />
+                                <p:inputText id="fechaentrada" label="fechaentrada" size="10" 
+                                             value="#{reservaController.reservaActual.fechaEntrada}"
+                                             readonly="true" style="background-color: lightgray">
+                                    <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                                </p:inputText>
+
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                                <p:outputLabel value="Estado:" />
+                                <p:selectOneMenu id="estado" value="#{reservaController.reservaActual.estadoReserva}" 
+                                                     required="true" requiredMessage="Seleccione el estado actual de la reserva.">
+                                        <f:converter converterId="estadoReservaConverter" />
+                                        <f:selectItems value="#{estadoReservaController.listaFiltro}" var="estado"
+                                                       itemLabel="#{estado.nombre}" itemValue="#{estado}" />
+                                </p:selectOneMenu>
+                                <p:message for="estado" display="icon"/>
+                                
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                                <p:outputLabel value="Fecha de salida:" for="fechasalida"/>
+                                <p:inputText id="fechasalida" label="fechasalida" size="10" 
+                                             value="#{reservaController.reservaActual.fechaSalida}"
+                                             readonly="true" style="background-color: lightgray">
+                                    <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                                </p:inputText> 
+
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                                <p:outputLabel value="Observaciones:" for="observaciones"/>
+                                <p:inputTextarea id="observaciones" rows="4" cols="15" counter="display" maxlength="60" counterTemplate="{0} caracteres restantes." 
+                                                 autoResize="false" value="#{reservaController.reservaActual.observaciones}" />
+
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:outputText id="display" /> 
+                            </h:panelGrid>
+
+
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="5">
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="1">
+                            <p:outputLabel id="noches">
+                               <h2>Nº noches: #{reservaController.reservaActual.numeroNoches}</h2>
+                            </p:outputLabel>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                    
+                    <p:separator/>
+
+                    <p:commandButton id="botonHabitaciones" value="Añadir habitación"
+                                    actionListener="#{habitacionSeleccionController.doPrepararSeleccion(reservaController.reservaActual)}" immediate="true">
+                       <p:ajax event="dialogReturn" listener="#{reservaController.doHabitacionSeleccionada}" update="habitaciones,importetotal" />
+                    </p:commandButton>
+
+                    <p:outputPanel id="habitaciones">
+                        <p:dataTable value="#{reservaController.reservaActual.detalles}" var="detalle" id="tablaHabs" emptyMessage="No hay habitaciones incluidas en la reserva.">
+
+                            <p:column headerText="Código" width="10%" styleClass="center">
+                                <h:outputText value="#{detalle.habitacion.codigo}" />
+                            </p:column>
+
+                            <p:column headerText="Tipo" styleClass="center">
+                                <h:outputText value="#{detalle.habitacion.tipoHabitacion.toString()}" />
+                            </p:column>
+                            
+                            <p:column headerText="Para fumadores" width="12%" styleClass="center">
+                                <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{detalle.habitacion.fumadorSn}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Es exterior" width="12%" styleClass="center">
+                                <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{detalle.habitacion.exteriorSn}"/>
+                            </p:column>
+
+                            <p:column headerText="Adap. mov. reducida" width="12%" styleClass="center">
+                                <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{detalle.habitacion.movReducidaSn}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Cama suplet." width="12%" styleClass="center">
+                                <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{detalle.habitacion.camaSuplSn}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Precio" width="15%" styleClass="center">
+                                <h:outputText value="#{detalle.habitacion.tipoHabitacion.precio}">
+                                    <f:convertNumber pattern="#,##0.00 €" />
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="">
+                                <p:commandButton value="" styleClass="lista-delete-btn-img" ajax="false" action="#{reservaController.doEliminarHabitacion(detalle)}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:outputPanel>
+    
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    
+                    <p:separator/>
+                    
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    
+                    <p:outputLabel value=" Importe de la reserva: " for="importetotal"/>
+                    <p:inputText id="importetotal" value="#{reservaController.reservaActual.importeTotal}"
+                                 size="10" readonly="true" style="background-color: lightgray; text-align: right">
+                        <f:convertNumber pattern="#,##0.00 €" />
+                    </p:inputText>
+                    
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    
+                    <p:separator/>
+                    
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Modificar reserva" update="formulario" action="#{reservaController.doModificarReserva()}"/>
+                        <p:commandButton value="Cancelar" immediate="true" action="#{reservaController.doPrepararListado()}"/>
+                    </h:panelGrid>
+
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

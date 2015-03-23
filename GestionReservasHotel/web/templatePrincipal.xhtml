@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="estilos.css"/>
+        <title>Gestión de Reservas de hotel</title>
+    </h:head>
+
+    <h:body>
+        <p:layout fullPage="true" styleClass="layout">
+            <!-- Cabecera -->
+            <p:layoutUnit position="north" size="82" styleClass="cabecera">
+                <h:panelGrid columns="3" width="100%" columnClasses="cabIzq, cabCtr, cabDch">                            
+                    <h:panelGroup>
+                        <h:outputLabel styleClass="cabecera">
+                            <h2>Gestión de Reservas de Hotel</h2>
+                        </h:outputLabel>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel styleClass="titulo">                                    
+                            <!-- Area para título de la página -->
+                            <ui:insert name="top"></ui:insert>
+                        </h:outputLabel>                                                                
+                    </h:panelGroup>                           
+
+                    <h:panelGroup>
+                        <h:panelGrid columns="3">
+                            <h:form>
+                                <p:outputLabel styleClass="cabecera">
+                                    Usuario: #{usuarioController.usuarioActual.nombreUsuario}
+                                    <h:commandLink actionListener="#{usuarioController.doCerrarSesion()}">    
+                                        <p:graphicImage id="logout" url="/resources/img/logout.png" width="20" height="20"/>
+                                    </h:commandLink>
+                                </p:outputLabel> 
+                            </h:form>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </h:panelGrid>   
+            </p:layoutUnit>
+
+            <!-- Menú -->
+            <p:layoutUnit position="west" size="185" resizable="false">
+                <h:form>
+                                      
+                    <p:menu>
+                        <p:submenu label="Mantenimiento">
+                            <p:menuitem value="Clientes" ajax="false" action="#{clienteController.doPrepararListadoVacio}"/>
+                            <p:menuitem value="Cargos" ajax="false" action="#{cargoController.doPrepararListadoVacio}"/>
+                            <p:menuitem value="Tipos habitación" ajax="false" action="#{tipoHabitacionController.doPrepararListadoVacio}"/>
+                            <p:menuitem value="Habitaciones" ajax="false" action="#{habitacionController.doPrepararListadoVacio}"/>
+                        </p:submenu>                        
+                        <p:submenu label="Gestión de Reservas">
+                            <p:menuitem value="Reservas" ajax="false" action="#{reservaController.doPrepararListado}"/>
+                            <p:menuitem value="Ocupación" ajax="false" action="#{ocupacionController.doListar}"/>
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>
+
+            <!-- Cuerpo de la página a mostrar -->
+            <p:layoutUnit position="center">                        
+                <!-- Area para contenido de la página -->
+                <ui:insert name="content">
+                    
+                </ui:insert>  
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>
+

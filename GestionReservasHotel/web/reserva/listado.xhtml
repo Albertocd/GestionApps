@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/templatePrincipal.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <ui:define name="top">
+        Gestión de Reservas
+    </ui:define>
+
+    <ui:define name="content">
+             
+        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+        
+        <h3>Filtros de búsqueda</h3>
+        <p:separator/>
+        
+        <h:form>  
+
+            <h:outputScript library="js" name="es_calendar.js"/>
+            
+            <p:focus for="referencia"/>
+            
+            <h:panelGrid columns="2">
+                <h:panelGrid columns="2">
+                    <h:panelGrid columns="15">
+                        <p:outputLabel value="Referencia:" />
+                        <p:inputText id="referencia" label="referencia" size="10" styleClass="mayuscula"
+                                     value="#{reservaController.filtro.referencia}"
+                                     maxlength="18"/>
+
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                        <p:outputLabel for="estado" value="Estado:" />
+                        <p:selectOneMenu id="estado" value="#{reservaController.filtro.estado}" >
+                            <f:selectItem itemLabel="-- Todos --" itemValue="#{null}" />
+                            <f:selectItems value="#{estadoReservaController.listaFiltro}" var="item"
+                                           itemLabel="#{item.nombre}" itemValue="#{item.idEstadoReserva}" />
+                        </p:selectOneMenu>
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        
+                    </h:panelGrid>   
+
+                    <h:panelGrid columns="13">
+                        <p:outputLabel value="Fecha entrada:" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <p:outputLabel for="fechaentradadesde" value="Desde:" />
+                        <p:calendar id="fechaentradadesde" value="#{reservaController.filtro.fechaEntradaDesde}" 
+                                    pattern="dd/MM/yyyy" mask="true" size="10" showOn="button" locale="es"/>
+                        <p:outputLabel for="fechaentradahasta" value="Hasta:" />
+                        <p:calendar id="fechaentradahasta" value="#{reservaController.filtro.fechaEntradaHasta}" 
+                                    pattern="dd/MM/yyyy" mask="true" size="10" showOn="button" locale="es"/>
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <p:outputLabel value="Fecha salida:" />
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <p:outputLabel for="fechasalidadesde" value="Desde:" />
+                        <p:calendar id="fechasalidadesde" value="#{reservaController.filtro.fechaSalidaDesde}" 
+                                    pattern="dd/MM/yyyy" mask="true" size="10" showOn="button" locale="es"/>
+                        <p:outputLabel for="fechasalidahasta" value="Hasta:" />
+                        <p:calendar id="fechasalidahasta" value="#{reservaController.filtro.fechaSalidaHasta}" 
+                                    pattern="dd/MM/yyyy" mask="true" size="10" showOn="button" locale="es"/>
+                    </h:panelGrid>
+                </h:panelGrid>
+                
+                
+            </h:panelGrid>
+            
+            <p:separator/>
+                
+            <h:panelGrid columns="2">
+                <p:commandButton value="Buscar" ajax="false" action="#{reservaController.doBuscar()}"/>
+                <p:commandButton value="Limpiar" ajax="false" action="#{reservaController.doPrepararListadoVacio()}"/>
+            </h:panelGrid>
+
+            <h3>Listado de reservas</h3>
+            <p:separator/>
+
+            <p:commandButton value="Nueva reserva" action="#{reservaController.doPrepararAlta}"/>
+            <h:outputText value="&lt;br/&gt;" escape="false" />
+            
+            <p:dataTable value="#{reservaController.listaReservas}" var="item" emptyMessage="No se han encontrado datos." 
+                         paginator="true" rows="10" paginatorPosition="top">
+
+                <p:column headerText="Referencia" styleClass="center" width="10%">
+                    <h:outputText value="#{item.referencia}"/>
+                </p:column>
+                
+                <p:column headerText="F. Entrada" styleClass="center" width="7%">
+                    <h:outputText value="#{item.fechaEntrada}">
+                        <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="F. Salida" styleClass="center" width="6%">
+                    <h:outputText value="#{item.fechaSalida}">
+                        <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Estado" styleClass="center" width="8%">
+                    <h:outputText value="#{item.estadoReserva.toString()}"/>
+                </p:column>
+                
+                <p:column headerText="Cliente" styleClass="left" width="30%">
+                    <h:outputText value="#{item.cliente.toString()}"/>
+                </p:column>
+                
+                <p:column headerText="Importe" styleClass="center" width="10%">
+                    <h:outputText value="#{item.importeTotal}">
+                        <f:convertNumber pattern="#,##0.00 €" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Fecha registro" styleClass="center">
+                    <h:outputText value="#{item.fechaRegistro}">
+                        <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Acciones" width="200" styleClass="center">
+                    <p:commandButton value="" styleClass="lista-ver-btn-img" ajax="false" action="#{reservaController.doPrepararConsulta(item)}" />
+                    <p:commandButton value="" styleClass="lista-modif-btn-img" ajax="false" action="#{reservaController.doPrepararModificacion(item)}" />
+                    <p:commandButton value="" styleClass="lista-consumos-btn-img" ajax="false" action="#{consumoController.doListadoConsumos(item)}" />
+                </p:column>   
+                
+                <f:facet name="footer">
+                    Total: #{fn:length(reservaController.listaReservas)}
+                </f:facet>
+            </p:dataTable>
+
+            
+            
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

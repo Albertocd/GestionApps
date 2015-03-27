@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../templatePrincipal.xhtml">
+
+            <ui:define name="top">
+                Mantenimiento de tipos de clase
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h3>Nuevo tipo de clase</h3>
+                <p:separator/>
+                
+                <h:form>
+
+                    <h:panelGrid id="formulario" columns="3">
+                        
+                        <p:outputLabel value="Descripción:" for="descripcion"/>
+                        <p:inputText id="descripcion" label="descripcion" size="15"
+                                     value="#{tipoClaseController.tipoClase.descripcion}"
+                                     maxlength="20" required="true"
+                                     requiredMessage="Debe introducir la descripción."/>
+                        <p:message for="descripcion" display="icon"/>
+                        
+                        <p:outputLabel value="Precio(€):" for="precio"/>
+                        <p:inputText id="precio" label="precio" size="10" 
+                                     value="#{tipoClaseController.tipoClase.precio}"
+                                     maxlength="10" required="true"
+                                     requiredMessage="Es necesario insertar el precio."
+                                     validatorMessage="El precio debe ser un valor numérico mayor de 0.">
+                                     <f:validateDoubleRange minimum="0.0"/>
+                        </p:inputText>
+                        <p:message for="precio" display="icon"/>
+                        
+                        <h:outputText value="Es particular: " />
+                        <h:selectBooleanCheckbox value="#{tipoClaseController.tipoClase.particularSn}"/>
+                        
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Guardar" update="formulario" action="#{tipoClaseController.doAlta}"/>
+                        <p:commandButton value="Cancelar" immediate="true" action="#{tipoClaseController.doPrepararListado}"/>
+                    </h:panelGrid>
+
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+                    
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

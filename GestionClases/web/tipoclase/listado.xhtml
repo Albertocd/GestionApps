@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/templatePrincipal.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <ui:define name="top">
+       
+    </ui:define>
+
+    <ui:define name="content">
+             
+        <h:form>
+            <h3>Listado de Tipos de clase</h3>
+            <p:separator/>
+            
+            <h:panelGrid columns="3">
+                <p:commandButton value="Buscar" ajax="false" action="#{tipoClaseController.doBuscar()}"/>
+                <p:commandButton value="Limpiar" ajax="false" action="#{tipoClaseController.doPrepararListadoVacio()}"/>
+                <p:commandButton value="Nuevo tipo" action="#{tipoClaseController.doPrepararAlta}"/>
+            </h:panelGrid>
+
+            <p:dataTable value="#{tipoClaseController.lista}" var="item" emptyMessage="No se han encontrado datos." 
+                         paginator="true" rows="10" paginatorPosition="top">
+                
+                <p:column headerText="Descripción" styleClass="left" width="30%">
+                    <h:outputText value="#{item.descripcion}"/>
+                </p:column>
+
+                <p:column headerText="Precio" styleClass="center" width="15%">
+                    <h:outputText value="#{item.precio}">
+                        <f:convertNumber pattern="#,##0.00 €" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Particular" styleClass="center" width="8%">
+                    <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{item.particularSn}"/>
+                </p:column>
+                
+                <p:column headerText="Acciones" width="200" styleClass="center">
+                    <p:commandButton value="" styleClass="lista-modif-btn-img" ajax="false" action="#{tipoClaseController.doPrepararModificacion(item)}" />
+                    
+                    <p:commandButton value="" styleClass="lista-borrar-btn-img" 
+                                     actionListener="#{tipoClaseController.doEliminar(item)}">
+                        <p:confirm header="Confirmación" message="¿Desea eliminar?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:column>
+                
+                <f:facet name="footer">
+                    Total: #{fn:length(tipoClaseController.lista)}
+                </f:facet>
+            </p:dataTable>
+            
+ 
+            <p:confirmDialog global="true">
+                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

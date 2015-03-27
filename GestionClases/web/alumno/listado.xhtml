@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/templatePrincipal.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <ui:define name="top">
+ 
+    </ui:define>
+
+    <ui:define name="content">
+            
+        <h:form>
+
+            <h3>Listado de Alumnos</h3>
+            <p:separator/>
+            
+            <h:panelGrid columns="15">
+                <p:outputLabel value="Nombre:" for="nombre"/>
+                <p:inputText id="nombre" label="nombre" size="40" value="#{alumnoController.filtro.nombre}" maxlength="50"/>
+                
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                
+                <p:outputLabel value="Es un grupo:" for="esgrupo"/>
+                <p:selectOneRadio id="esgrupo" value="#{alumnoController.filtro.esGrupo}">
+                    <f:selectItem itemLabel="Si" itemValue="1" />
+                    <f:selectItem itemLabel="No" itemValue="2" />
+                    <f:selectItem itemLabel="Todos" itemValue="0"/>
+                </p:selectOneRadio>
+            </h:panelGrid>
+            
+            <p:separator/>
+            
+            <h:panelGrid columns="3">
+                <p:commandButton value="Buscar" ajax="false" action="#{alumnoController.doBuscar()}"/>
+                <p:commandButton value="Limpiar" ajax="false" action="#{alumnoController.doPrepararListadoVacio()}"/>
+                <p:commandButton value="Nuevo alumno" action="#{alumnoController.doPrepararAlta}"/>
+            </h:panelGrid>
+
+            <p:dataTable value="#{alumnoController.lista}" var="item" emptyMessage="No se han encontrado datos." 
+                         paginator="true" rows="10" paginatorPosition="top">
+                
+                <p:column headerText="Nombre" styleClass="left" width="30%">
+                    <h:outputText value="#{item.nombre}"/>
+                </p:column>
+
+                <p:column headerText="Teléfono" styleClass="center" width="15%">
+                    <h:outputText value="#{item.telefono}"/>
+                </p:column>
+                
+                <p:column headerText="Correo electrónico" styleClass="center" width="20%">
+                    <h:outputText value="#{item.correoElectronico}"/>
+                </p:column>
+                
+                <p:column headerText="Fecha alta" styleClass="center" width="10%">
+                    <h:outputText value="#{item.fechaAlta}">
+                         <f:convertDateTime type="both" pattern="dd/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Es grupo" styleClass="center" width="8%">
+                    <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{item.esGrupo}"/>
+                </p:column>
+                
+                <p:column headerText="Activo" styleClass="center" width="8%">
+                    <h:graphicImage url="/resources/img/icon_activo.gif" rendered="#{item.activoSn}"/>
+                </p:column>
+                
+                <p:column headerText="Acciones" width="200" styleClass="center">
+                    <p:commandButton value="" styleClass="lista-modif-btn-img" ajax="false" action="#{alumnoController.doPrepararModificacion(item)}" />
+                    
+                    <p:commandButton value="" styleClass="lista-borrar-btn-img" 
+                                     actionListener="#{alumnoController.doEliminar(item)}">
+                        <p:confirm header="Confirmación" message="¿Desea eliminar?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:column>
+                
+                <f:facet name="footer">
+                    Total: #{fn:length(alumnoController.lista)}
+                </f:facet>
+            </p:dataTable>
+            
+ 
+            <p:confirmDialog global="true">
+                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

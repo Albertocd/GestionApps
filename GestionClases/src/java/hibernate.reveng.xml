@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="gestion_clases"/>
+  <table-filter match-name="alumnos"/>
+  <table-filter match-name="clases"/>
+  <table-filter match-name="pagos"/>
+  <table-filter match-name="acceso"/>
+  <table-filter match-name="dias_semana"/>
+  <table-filter match-name="tipos_clase"/>
+  <table-filter match-name="horarios"/>
+  <table-filter match-name="mensualidades"/>
+  <table-filter match-name="fechas_pago"/>
+  <table-filter match-name="asistencias"/>
+</hibernate-reverse-engineering>

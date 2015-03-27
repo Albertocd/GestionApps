@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/gestion_clases?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">root</property>
+
+    <mapping class="gestionclases.persistence.entity.Asistencia"/>
+    <mapping class="gestionclases.persistence.entity.DiaSemana"/>
+    <mapping class="gestionclases.persistence.entity.Clase"/>
+    <mapping class="gestionclases.persistence.entity.TipoClase"/>
+    <mapping class="gestionclases.persistence.entity.Horario"/>
+    <mapping class="gestionclases.persistence.entity.Pago"/>
+    <mapping class="gestionclases.persistence.entity.FechaPago"/>
+    <mapping class="gestionclases.persistence.entity.Mensualidad"/>
+    <mapping class="gestionclases.persistence.entity.Acceso"/>
+    <mapping class="gestionclases.persistence.entity.Alumno"/>
+  </session-factory>
+</hibernate-configuration>

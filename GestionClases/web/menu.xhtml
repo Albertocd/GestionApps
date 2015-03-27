@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+
+        <h:form>
+            <p:menubar autoDisplay="true">
+                <p:menuitem value="Inicio" action="#{alumnoController.doPrepararListadoVacio()}" />
+                <p:submenu label="Alumnos">
+                    <p:menuitem value="Listado" outcome="/alumno/listado.xhtml"/> 
+                    <p:menuitem value="Nuevo" outcome="/alumno/alta.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Horarios">
+                    <p:menuitem value="Listado" outcome="/horario/listado.xhtml"/>
+                    <p:menuitem value="Nuevo" outcome="/horario/alta.xhtml"/>
+                </p:submenu>  
+                <p:submenu label="Tipos de clase">
+                    <p:menuitem value="Listado" outcome="/tipoclase/listado.xhtml"/>
+                    <p:menuitem value="Nuevo" outcome="/tipoclase/alta.xhtml"/>
+                </p:submenu>  
+                <p:submenu label="Clases">
+                    <p:menuitem value="Listado" outcome="/clase/listado.xhtml"/>
+                    <p:menuitem value="Nuevo" outcome="/clase/alta.xhtml"/>
+                </p:submenu>
+                             
+            </p:menubar>
+        </h:form>        
+
+
+</ui:composition>

@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../templatePrincipal.xhtml">
+
+            <ui:define name="top">
+                Mantenimiento de horarios
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h3>Nuevo horario</h3>
+                <p:separator/>
+                
+                <h:form>
+
+                    <h:panelGrid id="formulario" columns="3">
+                        
+                        <p:outputLabel value="Hora:" for="hora"/>
+                        <p:inputText id="hora" label="hora" size="15"
+                                     value="#{horarioController.horario.hora}"
+                                     maxlength="15" required="true"
+                                     requiredMessage="Debe introducir la hora."/>
+                        <p:message for="hora" display="icon"/>
+                        
+                        <p:outputLabel value="Dia" />
+                        <p:selectOneMenu id="dia" value="#{horarioController.horario.diaSemana}" 
+                                             required="true" requiredMessage="Seleccione el dia de la semana.">
+                                <f:converter converterId="diaSemanaConverter" />
+                                <f:selectItem itemLabel="Seleccione dia ..." itemValue="#{null}" />
+                                <f:selectItems value="#{diaSemanaController.lista}" var="dia"
+                                               itemLabel="#{dia.nombre}" itemValue="#{dia}" />
+                        </p:selectOneMenu>
+                        <p:message for="dia" display="icon"/>
+                        
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Guardar" update="formulario" action="#{horarioController.doAlta}"/>
+                        <p:commandButton value="Cancelar" immediate="true" action="#{horarioController.doPrepararListado}"/>
+                    </h:panelGrid>
+
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+                    
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
